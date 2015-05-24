@@ -1,7 +1,8 @@
 <h2>Configuration</h2>
 
-
-<p><button class="btn btn-sm btn-primary" type="submit" ng-click="addMainHashtag(formadd); formadd=''">Save configuration</button></p>
+<p>
+    <button class="btn btn-sm btn-primary" type="submit" ng-click="saveConfiguration()">Save configuration</button>
+</p>
 
 <div ng-repeat="(key, hashtags) in config.hashtags | orderBy: key">
 

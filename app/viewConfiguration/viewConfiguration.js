@@ -9,7 +9,7 @@ angular.module('myApp.viewConfiguration', ['ngRoute'])
         });
     }])
 
-    .controller('viewConfigurationCtrl', ['$scope', function($scope) {
+    .controller('viewConfigurationCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.form = {};
 
         $scope.popularHashtags = {
@@ -27,6 +27,31 @@ angular.module('myApp.viewConfiguration', ['ngRoute'])
 
             ]
         };
+
+        $scope.saveConfiguration = function () {
+
+            $http.post('http://localhost:8080/rest/stream/config', {data: $scope.config.hashtags}).
+                success(function (data, status, headers, config) {
+                    $http.get('http://localhost:8080/rest/stream/config').
+                        success(function (data, status, headers, config) {
+                            $scope.config.hashtags = data.data;
+                        }).
+                        error(function (data, status, headers, config) {
+                            $scope.config.hashtags = {};
+                        });
+                }).
+                error(function (data, status, headers, config) {
+                    $scope.config.hashtags = {};
+                });
+        }
+
+        $http.get('http://localhost:8080/rest/stream/config').
+            success(function (data, status, headers, config) {
+                $scope.config.hashtags = data.data;
+            }).
+            error(function (data, status, headers, config) {
+                $scope.config.hashtags = {};
+            });
 
         $scope.config = {};
         $scope.config.hashtags = {
